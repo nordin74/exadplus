@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  database:
+    image: mysql:8
+    networks:
+      - exadsplus
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=tvseries
+      - MYSQL_USER=exadsplus
+      - MYSQL_PASSWORD=exadsplus
+    ports:
+      - '3306:3306'
+
+  backend:
+    build: .
+    depends_on:
+      - database
+    networks:
+      - exadsplus
+    volumes:
+      - .:/app
+    command: >
+      sh -c "wait-for-it -t 30 database:3306 &&
+      php migration.php &&
+      echo 'APPLICATION READY!' &&
+      php-fpm -F --pid /opt/bitnami/php/tmp/php-fpm.pid -y /opt/bitnami/php/etc/php-fpm.conf"
+networks:
+  exadsplus:

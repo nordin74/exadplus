@@ -1,0 +1,14 @@
+<?php /** @var string $designName  */ ?>
+<?php /** @var string $promotionName  */ ?>
+<?php /** @var string $designId  */ ?>
+<?php /** @var string $subViewTpl  */ ?>
+
+<html lang="en">
+<head>
+    <title><?= "$promotionName >>> $designName" ?></title>
+</head>
+<body>
+  <div>Some specific content for designId: <?= $designId ?></div>
+  <?= $this->createSubView(__DIR__ . $subViewTpl)->render() ?>
+</body>
+</html>

@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  nginx:
+    image: "bitnami/nginx:1.23"
+    depends_on:
+      - backend
+    networks:
+      - exadsplus
+    ports:
+      - "8884:8884"
+    volumes:
+      - ./nginx.conf:/opt/bitnami/nginx/conf/server_blocks/exadsplus.conf
+      - ./public:/app/public:ro
+  backend:
+    image: "bitnami/php-fpm:7.4"
+    networks:
+      - exadsplus
+    volumes:
+      - .:/app
+    command: >
+      sh -c "composer install &&
+      php-fpm -F --pid /opt/bitnami/php/tmp/php-fpm.pid -y /opt/bitnami/php/etc/php-fpm.conf"
+networks:
+  exadsplus:
+    driver: bridge

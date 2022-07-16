@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  backend:
+    image: "bitnami/php-fpm:7.4"
+    networks:
+      - exadsplus
+    volumes:
+      - .:/app
+networks:
+  exadsplus:
